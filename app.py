@@ -28,8 +28,26 @@ def main():
     if selected_countries:
         filtered_df = filtered_df[filtered_df['Country Name'].isin(selected_countries)]
     
-    st.write(f"Showing {len(filtered_df)} records")
-    st.dataframe(filtered_df)
+    tab1, tab2 = st.tabs(["📊 Overview", "Other"])
+    with tab1:
+        st.subheader("Overview")
+        if not filtered_df.empty:
+            latest_year = filtered_df['Year'].max()
+            compare_year = latest_year - 5
+            latest_data = filtered_df[filtered_df['Year'] == latest_year]
+            compare_data = filtered_df[filtered_df['Year'] == compare_year]
+            col1, col2, col3, col4 = st.columns(4)
+            with col1:
+                avg_latest = latest_data['Value'].mean()
+                st.metric("Global Average", f"{avg_latest:.1f}%")
+            with col2:
+                max_row = latest_data.loc[latest_data['Value'].idxmax()]
+                st.metric("Highest", f"{max_row['Value']:.1f}%", max_row['Country Name'])
+            with col3:
+                min_row = latest_data.loc[latest_data['Value'].idxmin()]
+                st.metric("Lowest", f"{min_row['Value']:.1f}%", min_row['Country Name'])
+            with col4:
+                st.metric("Countries", latest_data['Country Name'].nunique())
 
 if __name__ == "__main__":
     main()

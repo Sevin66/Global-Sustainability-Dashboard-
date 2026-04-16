@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import plotly.express as px
 
 st.set_page_config(page_title="Global Sustainability Dashboard", page_icon="🌍", layout="wide")
 
@@ -28,7 +29,7 @@ def main():
     if selected_countries:
         filtered_df = filtered_df[filtered_df['Country Name'].isin(selected_countries)]
     
-    tab1, tab2 = st.tabs(["📊 Overview", "Other"])
+    tab1, tab2 = st.tabs(["📊 Overview", "📈 Trends Over Time"])
     with tab1:
         st.subheader("Overview")
         if not filtered_df.empty:
@@ -48,6 +49,12 @@ def main():
                 st.metric("Lowest", f"{min_row['Value']:.1f}%", min_row['Country Name'])
             with col4:
                 st.metric("Countries", latest_data['Country Name'].nunique())
+
+    with tab2:
+        st.subheader("Trends Over Time")
+        if not filtered_df.empty:
+            fig_line = px.line(filtered_df, x='Year', y='Value', color='Country Name', markers=True)
+            st.plotly_chart(fig_line, use_container_width=True)
 
 if __name__ == "__main__":
     main()

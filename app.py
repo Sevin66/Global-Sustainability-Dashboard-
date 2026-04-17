@@ -29,7 +29,7 @@ def main():
     if selected_countries:
         filtered_df = filtered_df[filtered_df['Country Name'].isin(selected_countries)]
     
-    tab1, tab2 = st.tabs(["📊 Overview", "📈 Trends Over Time"])
+    tab1, tab2, tab3 = st.tabs(["📊 Overview", "📈 Trends Over Time", "🌎 Regional Comparison"])
     with tab1:
         st.subheader("Overview")
         if not filtered_df.empty:
@@ -55,6 +55,14 @@ def main():
         if not filtered_df.empty:
             fig_line = px.line(filtered_df, x='Year', y='Value', color='Country Name', markers=True)
             st.plotly_chart(fig_line, use_container_width=True)
+
+    with tab3:
+        st.subheader("Regional Comparison")
+        if not filtered_df.empty:
+            year_data = filtered_df[filtered_df['Year'] == filtered_df['Year'].max()]
+            region_avg = year_data.groupby('Region')['Value'].mean().reset_index()
+            fig_bar = px.bar(region_avg, x='Value', y='Region', orientation='h')
+            st.plotly_chart(fig_bar, use_container_width=True)
 
 if __name__ == "__main__":
     main()

@@ -29,7 +29,7 @@ def main():
     if selected_countries:
         filtered_df = filtered_df[filtered_df['Country Name'].isin(selected_countries)]
     
-    tab1, tab2, tab3 = st.tabs(["📊 Overview", "📈 Trends Over Time", "🌎 Regional Comparison"])
+    tab1, tab2, tab3, tab4 = st.tabs(["📊 Overview", "📈 Trends Over Time", "🌎 Regional Comparison", "🔀 Country Comparison"])
     with tab1:
         st.subheader("Overview")
         if not filtered_df.empty:
@@ -63,6 +63,10 @@ def main():
             region_avg = year_data.groupby('Region')['Value'].mean().reset_index()
             fig_bar = px.bar(region_avg, x='Value', y='Region', orientation='h')
             st.plotly_chart(fig_bar, use_container_width=True)
+
+    with tab4:
+        st.subheader("Country Comparison")
+        st.write("Select two indicators to compare across countries")
 
 if __name__ == "__main__":
     main()

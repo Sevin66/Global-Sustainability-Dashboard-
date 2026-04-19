@@ -29,7 +29,7 @@ def main():
     if selected_countries:
         filtered_df = filtered_df[filtered_df['Country Name'].isin(selected_countries)]
     
-    tab1, tab2, tab3, tab4 = st.tabs(["📊 Overview", "📈 Trends Over Time", "🌎 Regional Comparison", "🔀 Country Comparison"])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["📊 Overview", "📈 Trends Over Time", "🌎 Regional Comparison", "🔀 Country Comparison", "📋 Data Explorer"])
     with tab1:
         st.subheader("Overview")
         if not filtered_df.empty:
@@ -67,6 +67,10 @@ def main():
     with tab4:
         st.subheader("Country Comparison")
         st.write("Select two indicators to compare across countries")
+
+    with tab5:
+        st.subheader("Data Explorer")
+        st.dataframe(filtered_df)
 
 if __name__ == "__main__":
     main()

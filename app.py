@@ -23,6 +23,7 @@ st.set_page_config(
 # Hide the deploy button to keep the UI clean
 st.markdown("""
 <style>
+    .stDeployButton {display:none;}
     .main-header {
         font-size: 2.2rem;
         font-weight: 700;

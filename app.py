@@ -117,7 +117,47 @@ def main():
         filtered_df = filtered_df[filtered_df['Country Name'].isin(selected_countries)]
 
     # ── Tab Layout ──────────────────────────────────────────────────
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(["📊 Overview", "📈 Trends Over Time", "🌎 Regional Comparison", "🔀 Country Comparison", "📋 Data Explorer"])
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
+        "🗺️ Global Map",
+        "📊 Overview",
+        "📈 Trends Over Time",
+        "🌎 Regional Comparison",
+        "🔀 Country Comparison",
+        "📋 Data Explorer"
+    ])
+
+    # TAB 1: Global Map
+    with tab1:
+        st.subheader(f"Global Map: {get_indicator_label(selected_indicator)}")
+        
+        if filtered_df.empty:
+            st.warning("No data available for the selected filters.")
+        else:
+            map_year = st.selectbox(
+                "Select Year for Map",
+                options=sorted(filtered_df['Year'].unique(), reverse=True),
+                index=0,
+                key="map_year"
+            )
+            
+            map_data = filtered_df[filtered_df['Year'] == map_year]
+            
+            if not map_data.empty:
+                # Create a choropleth map using plotly express
+                fig_map = px.choropleth(
+                    map_data,
+                    locations="Country Code",
+                    color="Value",
+                    hover_name="Country Name",
+                    color_continuous_scale=px.colors.sequential.Viridis,
+                    title=f"{get_indicator_label(selected_indicator)} in {map_year}",
+                    labels={'Value': get_indicator_label(selected_indicator)}
+                )
+                fig_map.update_layout(
+                    margin={"r":0,"t":40,"l":0,"b":0},
+                    geo=dict(showframe=False, showcoastlines=True, projection_type='equirectangular')
+                )
+                st.plotly_chart(fig_map, use_container_width=True)
 
     # TAB 2: Overview - KPI Cards
     with tab2:

@@ -4,13 +4,17 @@ This is my project for the 5DATA004C Data Science Project Lifecycle module. It's
 
 ## The Data
 
-I used the World Development Indicators (WDI) dataset from the World Bank. The dashboard focuses on a few specific areas:
+I used the World Development Indicators (WDI) dataset from the World Bank. The raw data was downloaded via the "CSV Zip" link from the [World Bank Data Catalog](https://datacatalog.worldbank.org/infrastructure-data/search/dataset/0037712/world-development-indicators) and extracted into a local folder named `WDI_CSV_2026_04_09`.
+
+**Note:** The raw data files are not included in this repository because of their large size.
+
+The dashboard focuses on a few specific areas:
 - Renewable energy consumption
 - Access to electricity
 - Access to clean fuels for cooking
 - Forest area
 
-The original dataset was huge (around 190MB) so I wrote a quick script (`data/preprocess.py`) to clean it up and only keep the specific indicators and actual countries I needed.
+The original dataset was huge (around 190MB), so I wrote a quick script (`data/preprocess.py`) to clean it up and only keep the specific indicators and actual countries I needed. The cleaned version (`wdi_sustainability.csv`) is included in this repository.
 
 ## What it does
 
